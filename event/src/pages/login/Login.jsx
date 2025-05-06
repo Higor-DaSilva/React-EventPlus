@@ -27,7 +27,7 @@ const Login = () => {
                         </div>
                     </div>
                         <h3 className="mudar_senha">Esqueceu a senha?</h3>
-                    <Botao/>
+                    <Botao nomeBotao ="Login 😁"/>
                 </form>
             </section>
         </main>

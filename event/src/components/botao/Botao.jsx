@@ -1,8 +1,8 @@
 import "./Botao.css"
 
-const Botao = () => {
+const Botao = (promps) => {
     return(
-        <button className="botao">Entra</button>
+        <button className="botao">{promps.nomeBotao}</button>
     )
 }
 

@@ -3,8 +3,10 @@ import "./Footer.css";
 const Footer = () => {
     return(
         <footer>
-            <p>© 2025 - Projeto Event+ SENAI - Todos os direitos reservados.</p>
+            <p>Escola Senai de Informática - 2025</p>
         </footer>
     )
 }
 export default Footer;
+
+/*© */
