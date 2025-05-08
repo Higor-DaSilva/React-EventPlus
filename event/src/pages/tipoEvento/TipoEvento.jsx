@@ -3,6 +3,7 @@ import Header from "../../components/header/Header";
 import Cadastro from "../../components/cadastro/Cadastro";
 
 import Banner from "../../assents/img/banner_tipoEvento.png"
+import Lista from "../../components/lista/Lista";
 
 const TipoEvento = () => {
     return (
@@ -13,6 +14,12 @@ const TipoEvento = () => {
                     img_banner = {Banner}
                     nomes = "Título"
                     visibilidade = "none"
+                />
+                <Lista 
+                   tituloLista ="Lista Tipo de Evento"
+                   titulo = "titulo"
+                   visibilidade ="none"
+               
                 />
             <Footer/>
         </>
