@@ -17,9 +17,10 @@ const Header = () => {
               <Link to="/Contatos" className="link_header" href="">Contatos</Link>
             </nav>
             
-            <nav className="nav_header admin">
-              <Link to="/Administrador" className="link_header" href="">Administrador<img src={Admin} /></Link>
+            <nav className="nav_header">
+              <Link to="/Administrador" className="link_header" href="">Administrador</Link>
             </nav>
+              <img className="admin" src={Admin} />
 
             </div>
         </header>

@@ -75,10 +75,18 @@
         flex-direction: column;
         align-items: center;
     }
+
+    .banner_cadastro{
+        display: none;
+    }
 }
 
-@media screen and (max-width: 340px) {
+@media screen and (max-width: 430px) {
     .form_cadastro h1 {
         font-size: 20px;
+    }
+
+    .campo_preen, .campo_cad_nome{
+        padding: 0px 0px 0px 0px;
     }
 }

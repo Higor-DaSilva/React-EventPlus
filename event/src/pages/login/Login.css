@@ -59,14 +59,10 @@
 }
 
 
-@media screen and (max-width: 768px) {
 
-    /*0px -> 768px*/
-    .banner  {
+@media screen and (max-width: 768px){
+
+    .banner_login{
         display: none;
     }
-    .campo_imput input{
-        width: 200px;
-    }
-    
-}
+ }

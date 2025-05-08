@@ -3,6 +3,7 @@ import Header from "../../components/header/Header";
 import Ligado from "../../assents/img/listagem_ligado.png"
 import Desligado from "../../assents/img/listagem_desligado.png"
 import Comentario from "../../assents/img/comentario.png"
+import Toggle from "../../components/toggle/Toggle";
 import "./ListagemEvento.css";
 
 function ListagemEvento() {
@@ -10,7 +11,7 @@ function ListagemEvento() {
         <>
             <Header/>
 
-            <section className="Listagem">
+            <section className="ListagemEvento">
                     <h1>Eventos</h1>
                     <hr className="linha_titu" />
 
@@ -41,7 +42,7 @@ function ListagemEvento() {
                                 <td className="left" data-cell="Título">xxxxxxxxx</td>
                                 <td className="left" data-cell="Tipo Evento">xxxxxxxxx</td>
                                 <td className="right" data-cell="Comentários"><img src={Comentario} alt="" /></td>
-                                <td className="right" data-cell="Participar"><img src={Ligado} alt="" /></td>
+                                <td className="right" data-cell="Participar"><Toggle/></td>
 
                             </tr>
 
@@ -53,7 +54,7 @@ function ListagemEvento() {
                                 <td className="left" data-cell="Título">xxxxxxxxx</td>
                                 <td className="left" data-cell="Tipo Evento">xxxxxxxxx</td>
                                 <td className="right" data-cell="Comentários"><img src={Comentario} alt="" /></td>
-                                <td className="right" data-cell="Participar"><img src={Desligado} alt="" /></td>
+                                <td className="right" data-cell="Participar"> <Toggle/></td>
 
                             </tr>
 
