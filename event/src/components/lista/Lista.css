@@ -12,7 +12,7 @@
 
 
 .linha_titulo{
-   max-width: 150px;
+   max-width: 120px;
    width: 100%;
    border-style: solid;
    border-width: 1px;
@@ -27,7 +27,7 @@
 }
 
 .tabela{
-    width: 100%;
+    width: 57%;
     margin-top: 30px;
 }
 
@@ -40,24 +40,33 @@
 
 
 .tabela .table_cabecalho :first-child{
-    width: 300px;
+    width: 100px;
 
 }
 
 
 .tabela .table_cabecalho :nth-child(2){
-    width: 200px;
+    width: 150px;
 }
 
 .tabela .table_cabecalho th{
     width: 100px;   
 }
+.right{
+    text-align: right;
+
+}
+.left{
+    text-align: left;
+    padding-left: 10px;
+
+}
 
 
 .item_lista td{
     /* desgrudar o item do titulo */
-    padding: 20px 0 10px 0;
-    color: white;
+    padding: 20px 12px 10px 7px ;
+    color: black;
 }
 
 .item_lista{
@@ -67,24 +76,27 @@
 }
 
 .listagem h1{
-    color: white;
-    font-size: small;
+    color: black;
+    font-size: smaller;
 }
 
 .tabela_cabecalho th{
-    color: white;
+    color: black;
     font-size: small;
     padding-bottom: 5px;
+
 }
 
 .tabela_cabecalho{
-    border-bottom: white 1px solid;
+    border-bottom: black 1px solid;
 }
 
 .item_lista {
-    border-bottom: white 1px solid;
+    border-bottom: black 1px solid;
     
 }
+
+
 
 /* .divi{
     border-style: solid;

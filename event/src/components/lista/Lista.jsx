@@ -17,19 +17,19 @@ const Lista = (props) => {
                 <table>
                     <thead>
                         <tr className="tabela_cabecalho">
-                            <th>{props.titulo}</th>
-                            <th style={{display:props.visibilidade}}>Tipo Evento</th>
-                            <th>Editar</th>
-                            <th>Excluir</th>
+                            <th className="left">{props.titulo}</th>
+                            <th className="left"style={{display:props.visibilidade}}>Tipo Evento</th>                            
+                            <th className="right">Editar</th>
+                            <th className="right">Excluir</th>
                         </tr>
                     </thead>
                                 {/* <hr className="divi" /> */}
                     <tbody>
                         <tr className="item_lista">
-                            <td data-cell={props.titulo}>xxxxxxxxx</td>
-                            <td data-cell="Tipo Evento" style={{display:props.visibilidade}} >xxxxxxxxx</td>
-                            <td data-cell="Editar"><img src={Editar} alt="" /></td>
-                            <td data-cell="Excluir"><img src={Excluir} alt="" /></td>
+                            <td className="left" data-cell={props.titulo}>xxxxxxxxx</td>
+                            <td className="left" data-cell="Tipo Evento" style={{display:props.visibilidade}} >xxxxxxxxx</td>
+                            <td className="right"data-cell="Editar"><img src={Editar} alt="" /></td>
+                            <td className="right" data-cell="Excluir"><img src={Excluir} alt="" /></td>
 
                         </tr>
 
