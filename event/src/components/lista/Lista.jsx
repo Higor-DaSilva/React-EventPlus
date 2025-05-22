@@ -29,7 +29,7 @@ const Lista = (props) => {
                                 props.lista.map((item) => (
 
                                     <tr className="item_lista" key={props.tipoLista == "tipoEvento" ? item.idTipoEvento : item.idTipoUsuario}>
-                                        <td className="left" data-cell={props.titulo}>
+                                        <td className="left" data-cell={props.titulo}>o
                                             {props.tipoLista == "tipoEvento" ? item.tituloTipoEvento : item.tituloTipoUsuario}
                                         </td>
                                         <td className="left" data-cell="Tipo Evento" style={{ display: props.visibilidade }} >xxxxxxxxx</td>
@@ -48,10 +48,9 @@ const Lista = (props) => {
                                         </td>
 
                                     </tr>
-                                ))) : (
-                                <tr>
-                                    <td colSpan="4">Nenhum gênero foi encontrado.</td>
-                                </tr>
+                                ))
+                            ) : (
+                                <td colSpan="4">Nenhum gênero foi encontrado.</td>
                             )
                             }
 
