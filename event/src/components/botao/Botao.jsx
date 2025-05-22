@@ -2,7 +2,7 @@ import "./Botao.css"
 
 const Botao = (promps) => {
     return(
-        <button className="botao">{promps.nomeBotao}</button>
+        <button className="botao" type="submit">{promps.nomeBotao}</button>
     )
 }
 

@@ -62,7 +62,7 @@
 
 @media screen and (max-width: 768px){
 
-    .banner_login{
+    .banner{
         display: none;
     }
  }
