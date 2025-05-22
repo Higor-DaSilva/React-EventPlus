@@ -70,6 +70,11 @@ const TipoEvento = () => {
             inputLabel: "Novo tipo do evento",
             inputValue: tiposEventos.tituloTipoEvento,
             showCancelButton: true,
+            confirmButtonColor: '#b51d44',
+            cancelButtonColor: '#b5b5b5',
+            resultButtonColor: '#b51d44',
+            confirmButtonText: 'Sim, modificar',
+            cancelButtonText: 'Cancelar',
             inputValidator: (value) => {
                 if (!value) {
                     return "O campo precisa ser preenchido!";
@@ -94,8 +99,8 @@ const TipoEvento = () => {
             text: "Você não poderá desfazer esta ação!",
             icon: 'warning',
             showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
+            confirmButtonColor: '#b51d44',
+            cancelButtonColor: '#b5b5b5',
             confirmButtonText: 'Sim, apagar!',
             cancelButtonText: 'Cancelar',
         }).then((result) => {
@@ -137,9 +142,10 @@ const TipoEvento = () => {
                 titulo="titulo"
                 visibilidade="none"
                 lista={listaTiposEventos}
+                tipoLista="tipoEvento"
 
-                editarTipoEvento={editarTipoEvento}
-                excluirTipoEvento={excluirTipoEvento}
+                editar={editarTipoEvento}
+                excluir={excluirTipoEvento}
 
             />
             <Footer />

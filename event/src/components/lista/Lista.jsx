@@ -28,22 +28,22 @@ const Lista = (props) => {
                             {props.lista && props.lista.length > 0 ? (
                                 props.lista.map((item) => (
 
-                                    <tr className="item_lista" key={item.idTipoEvento}>
+                                    <tr className="item_lista" key={props.tipoLista == "tipoEvento" ? item.idTipoEvento : item.idTipoUsuario}>
                                         <td className="left" data-cell={props.titulo}>
-                                            {item.tituloTipoEvento}
+                                            {props.tipoLista == "tipoEvento" ? item.tituloTipoEvento : item.tituloTipoUsuario}
                                         </td>
                                         <td className="left" data-cell="Tipo Evento" style={{ display: props.visibilidade }} >xxxxxxxxx</td>
                                         <td className="right" data-cell="Editar">
                                             <img
                                                 src={Editar}
                                                 alt="caneta"
-                                                onClick={() => (props.editarTipoEvento(item))}
+                                                onClick={() => (props.editar(item))}
                                             />
                                         </td>
                                         <td className="right" data-cell="Excluir">
                                             <img src={Excluir}
                                                 alt="lixeira"
-                                                onClick={() => (props.excluirTipoEvento(item))}
+                                                onClick={() => (props.excluir(item))}
                                             />
                                         </td>
 
