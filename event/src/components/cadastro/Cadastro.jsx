@@ -56,8 +56,9 @@ const Cadastro = (props) => {
                             </select>
                         </div>
 
-                        <div className="campo_cad_nome" style={{ display: props.visibilidade }}>
-                            <textarea name="" id="" placeholder="Descrição" className="descricao"
+                        <div className="campo_cad_titulo" style={{ display: props.visibilidade }}>
+                            <textarea  
+                            name="" id="" placeholder="Descrição" className="descricao "
                                 value={props.valorText}
                                 onChange={(e) => props.setValorText(e.target.value)}
                             ></textarea>

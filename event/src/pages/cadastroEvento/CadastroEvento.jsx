@@ -77,6 +77,28 @@ const CadastroEvento = () => {
         }
     }
 
+    async function excluirEvento(id){
+       
+        Swal.fire({
+            title: 'Tem certeza?',
+            text: "Você não poderá desfazer esta ação!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#b51d44',
+            cancelButtonColor: '#b5b5b5',
+            confirmButtonText: 'Sim, apagar!',
+            cancelButtonText: 'Cancelar',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                api.delete(`TiposEventos/${id.idTipoEvento}`);
+                alertar("success", "Gênero Excluido!")
+            }
+        }).catch(error => {
+            console.log(error);
+            alertar("error", "Erro ao Excluir!");
+        });
+    }
+
     useEffect(() => {
         listarEvento();
         listarTipoEvento();
@@ -108,13 +130,15 @@ const CadastroEvento = () => {
                 setValorText={setDescricao}
 
                 lista={listaTipoEvento}
-            />
+
+                />
 
             <Lista
                 tituloLista="Lista de Evento"
                 titulo="Nome"
                 lista={listaEvento}
                 tipoLista = "cadastroEvento"
+                excluir={excluirEvento}
             />
             <Footer />
         </>
