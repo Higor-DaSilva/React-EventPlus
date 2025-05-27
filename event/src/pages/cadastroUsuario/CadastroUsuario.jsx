@@ -133,6 +133,7 @@ const CadastroUsuario = () => {
                 tituloLista="Lista Tipo de Evento"
                 titulo="titulo"
                 visibilidade="none"
+                tipoLista="tipoUsuario"
                 lista={listaTipoUsuario}
                 excluir={excluirTipoUsuario}
                 editar={editarTipoUsuario}

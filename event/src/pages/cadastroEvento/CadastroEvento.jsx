@@ -9,61 +9,114 @@ import api from "../../Services/services";
 
 import Banner from "../../assents/img/banner_cadastroEvento.png"
 const CadastroEvento = () => {
+    const [evento, setEvento] = useState("");
+    const [listaEvento, setListaEvento] = useState([])
+    const [tipoevento, setTipoEvento] = useState("");
+    const [listaTipoEvento, setListaTipoEvento] = useState([])
+    const [dataevento, setDataEvento] = useState("");
+    const [descricao, setDescricao] = useState("");
+    const [instituicao, setInstituicao] = useState("B4F736FD-96F5-48EE-86F5-9B9AA85D716A");
 
-    // const [cadastroEvento, setCadastroEvento] = useState("");
+    function alertar(icone, mensagem) {
+        const Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.onmouseenter = Swal.stopTimer;
+                toast.onmouseleave = Swal.resumeTimer;
+            }
+        });
+        Toast.fire({
+            icon: icone,
+            title: mensagem
+        });
+    }
 
-    //   function alertar(icone, mesagem) {
-    //         const Toast = Swal.mixin({
-    //             toast: true,
-    //             position: "top-end",
-    //             showConfirmButton: false,
-    //             timer: 3000,
-    //             timerProgressBar: true,
-    //             didOpen: (toast) => {
-    //                 toast.onmouseenter = Swal.stopTimer;
-    //                 toast.onmouseleave = Swal.resumeTimer;
-    //             }
-    //         });
-    //         Toast.fire({
-    //             icon: icone,
-    //             title: mesagem
-    //         });
-    //     }
+    async function listarTipoEvento() {
+        try {
+            const resposta = await api.get("TiposEventos");
+            setListaTipoEvento(resposta.data);
+        } catch (error) {
+            console.log(error);
 
-    //       async function cadastrarEvento(e) {
-    //     e.preventDefault();
+        }
 
-    //     if (cadastraoUsuario.trim() !== "") {
-    //         try {
-    //             api.post("Eventos", { TituloTipoUsuario: tipoUsuario })
-    //             alertar("success", "Cadastro realizado com sucesso")
-    //             setTipoUsuario("")
-    //         } catch (error) {
-    //             alertar("error", "Erro! entre em contato com o suporte!")
-    //             console.log(error)
-    //         }
-    //     } else {
-    //         alertar("warning", "Preencha o campo")
-    //     }
+    }
 
-    // }
+
+    async function listarEvento() {
+        try {
+            const resposta = await api.get("Eventos")
+            setListaEvento(resposta.data)
+        } catch (error) {
+            console.log(error);
+
+        }
+    }
+
+    async function cadastrarEvento(evt) {
+        evt.preventDefault();
+        if (evento.trim() != "") {
+            try {
+                await api.post("Eventos", { nomeEvento: evento, idTipoEvento: tipoevento, dataEvento: dataevento, descricao: descricao, idInstituicao: instituicao });
+                alertar("success", "Cadastro realizado com sucesso!");
+                setEvento("");
+                setDataEvento();
+                setDescricao("");
+                setTipoEvento("");
+
+            } catch (error) {
+                alertar("error", "Entre em contato com o suporte")
+            }
+        } else {
+            alertar("error", "Preencha o campo vazio")
+
+        }
+    }
+
+    useEffect(() => {
+        listarEvento();
+        listarTipoEvento();
+    }, [listaEvento]);
 
     return (
         <>
-            <Header/>
-                <Cadastro
-                tituloCadastro = "Cadastro de Evento"
-                img_banner = {Banner}
-                nomes = "Nome"
-                
-                />
+            <Header nomeUsu="Administrador" />
+            <Cadastro
+                tituloCadastro="Cadastro de Evento"
+                img_banner={Banner}
+                nomes="Nome"
 
-                <Lista 
-                    tituloLista ="Lista de Evento"
-                    titulo = "Nome"
-                
-                />
-            <Footer/>
+                funcCadastro={cadastrarEvento}
+
+                valorInput={evento}
+                setValorInput={setEvento}
+
+                valorSelect={tipoevento}
+                setValorSelect={setTipoEvento}
+
+                valorSelect2={instituicao}
+                setValorSelect2={setInstituicao}
+
+                valorDate={dataevento}
+                setValorDate={setDataEvento}
+
+                valorText={descricao}
+                setValorText={setDescricao}
+
+                lista={listaTipoEvento}
+            />
+
+            <Lista
+                tituloLista="Lista de Evento"
+                titulo="Nome"
+                lista={listaEvento}
+                tipoLista = "cadastroEvento"
+            />
+            <Footer />
         </>
     )
 }
