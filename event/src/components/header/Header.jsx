@@ -18,7 +18,7 @@ const Header = () => {
             </nav>
             
             <nav className="nav_header">
-              <Link to="/Administrador" className="link_header" href="">Administrador</Link>
+              <Link to="/ListagemEvento" className="link_header" href="">Administrador</Link>
             </nav>
               <img className="admin" src={Admin} />
 

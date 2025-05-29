@@ -26,12 +26,12 @@
     border-collapse: collapse;
 }
 .ListagemEvento .tabela_listagem .cabecalho_listagem :first-child{
-    width: 200px;
+    width: 100px;
 }
 
 
 .ListagemEvento .tabela_listagem .cabecalho_listagem :nth-child(2){
-    width: 500px;
+    
 }
 
 

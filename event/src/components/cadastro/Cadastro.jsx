@@ -54,9 +54,7 @@ const Cadastro = (props) => {
                             >
                                 <option selected value="">Senai</option>
                             </select>
-                        </div>
-
-                        <div className="campo_cad_titulo" style={{ display: props.visibilidade }}>
+             
                             <textarea  
                             name="" id="" placeholder="Descrição" className="descricao "
                                 value={props.valorText}
