@@ -77,8 +77,8 @@ const CadastroEvento = () => {
         }
     }
 
-    async function excluirEvento(id){
-       
+    async function excluirEvento(id) {
+
         Swal.fire({
             title: 'Tem certeza?',
             text: "Você não poderá desfazer esta ação!",
@@ -90,12 +90,78 @@ const CadastroEvento = () => {
             cancelButtonText: 'Cancelar',
         }).then((result) => {
             if (result.isConfirmed) {
-                api.delete(`TiposEventos/${id.idTipoEvento}`);
+                api.delete(`Eventos/${id.idEvento}`);
                 alertar("success", "Gênero Excluido!")
             }
         }).catch(error => {
             console.log(error);
             alertar("error", "Erro ao Excluir!");
+        });
+    }
+
+ async function editarEvento(evento) {
+  try {
+    const tiposOptions = listaTipoEvento
+      .map(tipo => `<option value="${tipo.idTipoEvento}" ${tipo.idTipoEvento === evento.idTipoEvento ? 'selected' : ''}>${tipo.tituloTipoEvento}</option>`)
+      .join('');
+
+    const { value } = await Swal.fire({
+      title: "Editar Tipo de Evento",
+      html: `
+        <input id="campo1" class="swal2-input" placeholder="Título" value="${evento.nomeEvento || ''}">
+        <input id="campo2" class="swal2-input" type="date" value="${evento.dataEvento?.substring(0, 10) || ''}">
+        <select id="campo3" class="swal2-select">${tiposOptions}</select>
+        <input id="campo4" class="swal2-input" placeholder="Categoria" value="${evento.descricao || ''}">
+      `,
+      showCancelButton: true,
+      confirmButtonText: "Salvar",
+      cancelButtonText: "Cancelar",
+      focusConfirm: false,
+      preConfirm: () => {
+        const campo1 = document.getElementById("campo1").value;
+        const campo2 = document.getElementById("campo2").value;
+        const campo3 = document.getElementById("campo3").value;
+        const campo4 = document.getElementById("campo4").value;
+
+        if (!campo1 || !campo2 || !campo3 || !campo4) {
+          Swal.showValidationMessage("Preencha todos os campos.");
+          return false;
+        }
+
+        return { campo1, campo2, campo3, campo4 };
+      }
+    });
+
+    if (!value) {
+      console.log("Edição cancelada pelo usuário.");
+      return;
+    }
+
+    console.log("Dados para atualizar:", value);
+
+    await api.put(`eventos/${evento.idEvento}`, {
+      nomeEvento: value.campo1,
+      dataEvento: value.campo2,
+      idTipoEvento: value.campo3,  
+      descricao: value.campo4,
+    });
+
+    console.log("Evento atualizado com sucesso!");
+    Swal.fire("Atualizado!", "Dados salvos com sucesso.", "success");
+    listarEvento();
+
+  } catch (error) {
+    console.log("Erro ao atualizar evento:", error);
+    Swal.fire("Erro!", "Não foi possível atualizar.", "error");
+  }
+}
+
+    async function descricaoEvento(id) {
+        Swal.fire({
+            title: 'Descrição do Evento',
+            text: id.descricao,
+            icon: 'info',
+            confirmButtonText: 'Fechar'
         });
     }
 
@@ -131,14 +197,16 @@ const CadastroEvento = () => {
 
                 lista={listaTipoEvento}
 
-                />
+            />
 
             <Lista
                 tituloLista="Lista de Evento"
                 titulo="Nome"
                 lista={listaEvento}
-                tipoLista = "cadastroEvento"
+
                 excluir={excluirEvento}
+                editar={editarEvento}
+                descricao={descricaoEvento}
             />
             <Footer />
         </>

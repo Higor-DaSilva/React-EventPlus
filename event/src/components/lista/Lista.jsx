@@ -32,20 +32,20 @@ const Lista = (props) => {
                             {props.lista && props.lista.length > 0 ? (
                                 props.lista.map((item) => (
 
-                                    <tr className="item_lista" key={props.tipoLista == "tipoEvento" ? item.idTipoEvento : props.tipoLista == "tipoUsuario" ?  item.idTipoUsuario : props.tipoLista == "cadastroEvento" ? item.idEvento: "vazio"}>
+                                    <tr className="item_lista" key={props.tipoLista == "tipoEvento" ? item.idTipoEvento : (props.tipoLista == "tipoUsuario" ?  item.idTipoUsuario : item.idEvento)}>
                                         <td className="left" data-cell={props.titulo}>
-                                            {props.tipoLista == "tipoEvento" ? item.tituloTipoEvento : props.tipoLista == "tipoUsuario" ? item.tituloTipoUsuario :props.tipoLista == "cadastroEvento"? item.nomeEvento : "vazio"}
+                                            {props.tipoLista == "tipoEvento" ? item.tituloTipoEvento : (props.tipoLista == "tipoUsuario" ? item.tituloTipoUsuario : item.nomeEvento )}
                                         </td>
                                         <td className="left" data-cell="Data do Evento"  style={{ display: props.visibilidade }}>
-                                            {item.dataEvento}
+                                            {new Date(item.dataEvento).toLocaleDateString('pt-BR')}
                                         </td>
-                                        <td className="left" data-cell="Tipo Evento" style={{ display: props.visibilidade }} >{item.idTipoEvento}</td>
+                                        <td className="left" data-cell="Tipo Evento" style={{ display: props.visibilidade }} >{item.tiposEvento?.tituloTipoEvento}</td>
                                         <td className="right" data-cell="Editar">
                                             <img
                                                 src={Editar}
                                                 alt="caneta"
                                                 onClick={() => (props.editar(item))}
-                                            />
+                                            />  
                                         </td>
 
                                         <td className="right" data-cell="Excluir">
