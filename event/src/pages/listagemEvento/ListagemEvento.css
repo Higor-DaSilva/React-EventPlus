@@ -26,12 +26,12 @@
     border-collapse: collapse;
 }
 .ListagemEvento .tabela_listagem .cabecalho_listagem :first-child{
-    width: 100px;
+    width: 200px;
 }
 
 
 .ListagemEvento .tabela_listagem .cabecalho_listagem :nth-child(2){
-    
+    width: 200px;
 }
 
 
@@ -44,7 +44,7 @@
     padding: 20px 20px 10px 7px ;
 }
 .espaco td{
-    padding: 50px 20px 10px 7px ;
+    padding: 20px 20px 50px 50px ;
 }
 
 .item_listagem{
@@ -81,6 +81,17 @@
     border-left: none;
     outline: none;
 }
+
+.ListagemEvento .right{
+    text-align: right;
+
+}
+.ListagemEvento .left{
+    text-align: left;
+    padding-left: 10px;
+
+}
+
 
 
 
