@@ -4,49 +4,113 @@ import Comentario from "../../assents/img/comentario.png"
 import Decricao2 from "../../assents/img/informacoes2.png";
 import Toggle from "../../components/toggle/Toggle";
 import "./ListagemEvento.css";
-import { useState, useEffect } from "react";
+import { useState, useEffect, } from "react";
 import Swal from 'sweetalert2'
 import api from "../../Services/services";
 import { format } from "date-fns";
-import Modal from "../../components/modal/Modal";
+import Modal from "../../components/Modal/Modal";
 
 function ListagemEvento() {
     const [listaEventos, setListaEventos] = useState([]);
     const [valorSelectEventos, setvalorSelectEventos] = useState("");
+    const [tipoModal, setTipoModal] = useState("");
+    const [dadosModal, setDadosModal] = useState({});
+    const [modalAberto, setModalAberto] = useState(false);
 
+    const [filtroData, setFiltroData] = useState(["todos"])
 
+    const [usuarioId, setUsuarioId] = useState("9E88FF81-D572-4CBB-9A40-FBA05EED0EC3")
 
     async function listarEvento() {
         try {
             const eventoListado = await api.get("Eventos");
-            setListaEventos(eventoListado.data);
+            const todosOsEventos = eventoListado.data
+
+            const respostapresenca = await api.get("PresencaEventos/ListarMinhas/" + usuarioId)
+            const minhasPresencas = respostapresenca.data
+
+            const eventosComPresenca = todosOsEventos.map((atualEvento) => {
+                const presenca = minhasPresencas.find(p => p.idEvento === atualEvento.idEvento);
+
+                return {
+                    //as informações tanto de evento quanto de eventos que possuem presença
+                    ...atualEvento, possuipresenca: presenca?.situacao === true, idPresenca: presenca?.idPresencaEvento || null
+                }
+            })
+
+            setListaEventos(eventosComPresenca);
+
 
         } catch (error) {
             console.log(error);
         }
     }
 
-    async function descricaoLista(id) {
-        Swal.fire({
-            title: 'Descrição do Evento',
-            text: id,
-            icon: 'info',
-            confirmButtonText: 'Fechar'
-        });
-    }
+    // async function descricaoLista(id) {
+    //     Swal.fire({
+    //         title: 'Descrição do Evento',
+    //         text: id,
+    //         icon: 'info',
+    //         confirmButtonText: 'Fechar'
+    //     });
+    // }
 
-    async function comentarios(id) {
-        Swal.fire({
-            title: 'Descrição do Evento',
-            text: id,
-            icon: 'success',
-            confirmButtonText: 'Fechar'
-        });
-    }
+    // async function comentarios(id) {
+    //     Swal.fire({
+    //         title: 'Descrição do Evento',
+    //         text: id,
+    //         icon: 'success',
+    //         confirmButtonText: 'Fechar'
+    //     });
+    // }
 
     useEffect(() => {
         listarEvento();
     }, []);
+
+    function abrirModal(tipo, dados) {
+        setModalAberto(true)
+        setTipoModal(tipo)
+        setDadosModal(dados)
+    }
+
+    function fecharModal() {
+        setModalAberto(false);
+        setDadosModal({});
+        setTipoModal("");
+    }
+
+    async function manipularPresenca(idEvento, presenca, idPresenca) {
+        try {
+            if (presenca && idPresenca != "") {
+                //atualização: situação para FALSE
+                await api.put(`PresencasEventos/${idPresenca}`, { situacao: false })
+                Swal.fire('Removido!', 'Sua presença foi removida.', 'success')
+            } else if (idPresenca != "") {
+                //atualização: situação para True
+                await api.put(`PresencasEventos/${idPresenca}`, { situacao: true })
+                Swal.fire('Removido!', 'Sua presença foi confirmada.', 'success')
+            } else {
+                //cadastrar uma nova presença
+                await api.post("PresencaEventos", { situacao: true, idUsuario: usuarioId, idEvento: idEvento })
+                Swal.fire('Removido!', 'Sua presença foi removida.', 'success')
+            }
+            listarEvento();
+        } catch (error) {
+            console.log(error);
+
+        }
+    }
+
+    function filtrarEvento() {
+        const hoje = new Date();
+
+        if (filtroData.includes("todos")) return true;
+        if (filtroData.includes("futuros") && dataEvento > hoje) return true;
+        if (filtroData.includes("passados") && dataEvento < hoje) return true;
+
+        return false;
+    }
 
     return (
         <>
@@ -59,17 +123,10 @@ function ListagemEvento() {
                 <div className="tabela_listagem layout_grid">
 
                     <div className="left  seletor">
-                        <label htmlFor="eventos"></label>
-                        <select name="eventos" id=""
-                            value={valorSelectEventos}
-                            onChange={(e) => setvalorSelectEventos(e.target.value)}>
-
-                            <option value="" disabled>
-                                Evento
-                            </option>
-                            {listaEventos.map((item) => (
-                                <option value={item.idEvento}>{item.nomeEvento}</option>
-                            ))}
+                        <select onChange={(e) => setFiltroData([e.target.value])}>
+                            <option value="todos" selected>Todos os eventos</option>
+                            <option value="futuros">somente futuros</option>
+                            <option value="passados">somente passados</option>
                         </select>
                     </div>
                     <table>
@@ -89,10 +146,10 @@ function ListagemEvento() {
                         {/* <hr className="divi" /> */}
                         <tbody>
 
-                            {listaEventos.length > 0 ?(
+                            {listaEventos.length > 0 ? (
 
-                                
-                                listaEventos.map((item) => (
+
+                                filtrarEventos() && filtrarEvento().map((item) => (
                                     <tr className="item_listagem separa">
                                         <td className="left" data-cell="Título">
                                             {item.nomeEvento}
@@ -107,30 +164,34 @@ function ListagemEvento() {
                                         <td className="right" data-cell="Descrição">
                                             <img src={Decricao2}
                                                 alt=""
-                                                // onClick={item.descricaoLista}
-                                                onClick={() => descricaoLista(item.descricao)}
-                                                />
+                                                // onClick={() => descricaoLista(item.descricao)}
+                                                onClick={() => abrirModal("descricaoEvento", { descricao: item.descricao })}
+                                            />
                                         </td>
                                         <td className="right" data-cell="Comentários">
                                             <img src={Comentario}
                                                 alt=""
-                                                
-                                                onClick={() => comentarios(item.idComentarioEvento)}
+                                                onClick={() => abrirModal({ idvento: item.idEvento })}
+                                            // onClick={() => comentarios(item.idComentarioEvento)}
                                             />
-    
+
                                         </td>
-    
+
                                         <td className="right" data-cell="Participar">
-                                            <Toggle />
+                                            <Toggle
+                                                presenca={item.possuipresenca}
+                                                manipular={() => manipularPresenca(item.idEvento, item.possuipresenca, item.idPresenca)} />
                                             {/* <label className="switch">
-                                                <input type="checkbox" />
+                                                <input type="checkbox"
+                                                checked={item.possuipresenca}
+                                                onChange={() => manipularPresenca(item.idEvento, item.possuipresenca, item.idPresenca)} />
                                                 <span className="slider"></span>
                                             </label> */}
                                         </td>
                                     </tr>
                                 ))
                             ) : (
-                               <td  className="mensagem" colSpan="4">Nenhum gênero foi encontrado.</td>
+                                <td className="mensagem" colSpan="4">Nenhum gênero foi encontrado.</td>
 
                             )}
                         </tbody>
@@ -140,7 +201,19 @@ function ListagemEvento() {
 
 
             <Footer />
-            <Modal/>
+
+            {modalAberto && (
+
+                <Modal
+                    titulo={tipoModal == "descricaoEvento" ? "Descrição do Evento" : "Comentário"}
+                    tipoModel={tipoModal}
+
+                    idEvento={dadosModal.idEvento}
+                    descricao={dadosModal.descricao}
+
+                    fecharModal={fecharModal}
+                />
+            )}
         </>
     );
 }

@@ -24,7 +24,7 @@ const Cadastro = (props) => {
                         <div className="campo_cad_nome" style={{ display: props.visibilidade }}>
                             <input
                                 placeholder={props.campo_placeholder}
-                                style={{ display: props.visibilidade}}
+                                style={{ display: props.visibilidade }}
                                 type="date"
                                 id="start"
                                 name="trip-start"
@@ -54,12 +54,17 @@ const Cadastro = (props) => {
                             >
                                 <option selected value="">Senai</option>
                             </select>
-             
-                            <textarea  
-                            name="" id="" placeholder="Descrição" className="descricao "
+                        </div>
+
+                        <div className="campo_cad_nome" style={{ display: props.visibilidade }}>
+
+                            <input
+                                type="text"
+                                name="descricao"
+                                placeholder="Descrição"
                                 value={props.valorText}
                                 onChange={(e) => props.setValorText(e.target.value)}
-                            ></textarea>
+                            />
                         </div>
 
                         <Botao nomeBotao="Cadastrar 👍" />
