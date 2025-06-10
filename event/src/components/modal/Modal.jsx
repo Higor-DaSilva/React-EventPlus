@@ -4,32 +4,34 @@ import "./Modal.css"
 import api from "../../Services/services";
 
 const Modal = (props) => {
+
     const [comentarios, setComentarios] = useState([])
+    const [usuarioId, setUsuarioId] = useState("B2381F43-9D74-400D-B3ED-FD05D20E9885")
+    const [novoComentario, setNovoComentario] = useState("")
 
-    const [novoComntario, setNovoComentario] = useState("");
-
-    const [usuarioId, setUsuarioId] = useState("9E88FF81-D572-4CBB-9A40-FBA05EED0EC3")
 
     async function listarComentarios() {
         try {
             const resposta = await api.get(`ComentariosEventos/ListarSomenteExibe?id=${props.idEvento}`);
-            setComentarios(resposta.data);
-
+            setComentarios(resposta.data)
         } catch (error) {
-            console.log(error);
 
         }
     }
 
-    async function cadastrarComentarios() {
+    useEffect(() => {
+        listarComentarios()
+    }, [comentarios])
+
+    async function cadastrarComentario(comentario) {
         try {
-            await api.post("Comentarios", {
+            await api.post("ComentariosEventos", {
                 idUsuario: usuarioId,
                 idEvento: props.idEvento,
-                descricao: comentarios
+                descricao: comentario
             })
         } catch (error) {
-            console.error(error);
+            console.log(error);
 
         }
     }
@@ -39,46 +41,46 @@ const Modal = (props) => {
             await api.delete(`ComentariosEventos/${idComentario}`)
         } catch (error) {
             console.log(error);
-            
+
         }
     }
 
-    useEffect(() => {
-        listarComentarios();
-    }, [comentarios])
-
     return (
         <>
-            <div className='model_overlay' onClick={props.fecharModal}></div>
-            <div className='model'>
-                <h1>{props.titulo}</h1>
-                <div className='model_conteudo'>
-                    {props.tipoModel == "descricaoEvento" ? (
-                        <p>{props.descricao}</p>
-                    ) : (
-                        <>
-                            {comentarios.map((item) => (
-                                <div key={item.idcomentarioEvento}>
-                                    <strong>{item.usuario.nomeUsuario}</strong>
-                                    <img src={imgDeletar}
-                                        alt='deletar' 
-                                        onClick={() => deletarComentario(item.idcomentarioEvento)}/>
-                                    <p>{item.descricao}</p>
+            <div className="model-overlay" onClick={props.fecharModal}>
+                <div className="model" onClick={(e) => e.stopPropagation()}>
+                    <h1>{props.titulo}</h1>
+                    <div className="model_conteudo">
+                        {props.tipoModel === "descricaoEvento" ? (
+                            <p>{props.descricao}</p>
+                        ) : (
+                            <>
+                                {comentarios.map((item) => (
+                                    <div key={item.idComentarioEvento}>
+                                        <strong>{item.usuario.nomeUsuario}</strong>
+                                        <img src={imgDeletar} alt="deletar"
+                                            onClick={() => deletarComentario(item.idComentarioEvento)} />
+                                        <p>{item.descricao}</p>
+                                        <hr />
+                                    </div>
+                                ))}
+                                <div>
+                                    <input
+                                        type="text"
+                                        placeholder="Escreva seu comentario..."
+                                        value={novoComentario}
+                                        onChange={(e) => setNovoComentario(e.target.value)}
+                                    />
+                                    <button onClick={() => cadastrarComentario(novoComentario)}>
+                                        Cadastrar
+                                    </button>
                                 </div>
-                            ))}
-                            <div>
-                                <input type="text" placeholder="Escrever seu comentário..."
-                                value={novoComntario}
-                                onChange={(e) => setNovoComentario(e.target.value)} />
-                                <button onClick={() => cadastrarComentarios()}>
-                                    Cadastrar
-                                </button>
-                            </div>
-                        </>
-                    )}
-
+                            </>
+                        )}
+                    </div>
                 </div>
             </div>
+
         </>
     )
 }

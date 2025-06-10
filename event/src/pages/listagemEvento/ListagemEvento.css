@@ -1,130 +1,80 @@
-.ListagemEvento {
-    min-height: calc(100vh - (75px + 40px));
+
+/* footer{
+    position: fixed;
+} */
+
+.listagemEventos {
+    height: 84vh;
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
     padding: 40px 0;
+    color: black;
+    
 }
 
-.ListagemEvento .linha_titu {
-    max-width: 60px;
-   width: 100%;
-   border-style: solid;
-   border-width: 1px;
-   border-color: red;
-   margin-top: 5px;
-   margin-bottom: 20px;
+.table_eventos img {
+    height: 20px;
 }
 
-.ListagemEvento .tabela_listagem {
-    width: 57%;
-    margin-top: 30px;
-}
-
-.ListagemEvento .tabela_listagem table{
-    width: 100%;
-    border-collapse: collapse;
-}
-.ListagemEvento .tabela_listagem .cabecalho_listagem :first-child{
-    width: 200px;
-}
-
-
-.ListagemEvento .tabela_listagem .cabecalho_listagem :nth-child(2){
-    width: 200px;
-}
-
-
-.ListagemEvento .tabela_listagem th{
-    width: 100px; 
-}
-
-
-.separa td {
-    padding: 20px 20px 10px 7px ;
-}
-.espaco td{
-    padding: 20px 20px 50px 50px ;
-}
-
-.item_listagem{
+.tabela_eventos{
+    width: 80%;
+    margin-top: 40px;
     text-align: center;
-    border-bottom:  solid 1px purple;
+    margin-left: -60px;
+
 }
 
 
-.ListagemEvento h1{
-    color: black;
-    font-size: medium;
+.tabela_eventos .table_eventos :first-child {
+    width: 300px;
+    
+    
 }
 
-.cabecalho_listagem th{
-    color: black;
-    font-size: small;
-    padding-bottom: 5px;
+.tabela_eventos .table_eventos :nth-child(2) {
+    width: 760px;
+    text-align: start;
+    
+
 }
 
-.cabecalho_listagem{
-    border-bottom: purple 1px solid;
-    margin-bottom: 30px;
+
+.tabela_eventos .item_listaEventos :nth-child(2){
+    text-align: start;
+    
 }
 
-.item_listagem {
-    border-bottom: black 1px solid;
+.tabela_eventos .table_eventos th {
+    border-bottom: 1px solid #B51D44;
+    width: 100px;
+    padding: 5px 0;
+    
 }
 
-.seletor select{
-    min-width: 150px;
-    margin-bottom: 50px;
-    border-top: none;
-    border-right: none;
+.item_listaEventos td {
+    padding: 28px 0 0 1px;
+    border-bottom: 1px solid black;
+}
+
+.select {
+    border: none;
     border-left: none;
+    border-right: none;
+    border-top: none;
     outline: none;
+    padding: 0 5px;
+    width: 355px;
+    height: 30px;
+    margin-bottom: 60px;
+    color: black;
+    display: flex;
+    border-bottom: 1px solid #201849;
+    
 }
 
-.ListagemEvento .right{
-    text-align: right;
-
-}
-.ListagemEvento .left{
-    text-align: left;
-    padding-left: 10px;
-
-}
-
-
-
-
-@media screen and (max-width: 768px){
-
-    .ListagemEvento thead{
-        display: none;
-    }
-
-
-    .item_listagem td{
-        display: grid;
-        text-align: left;
-        padding: 10px 10px 10px 0;
-        grid-template-columns: 10ch auto;
-
-    }
-
-
-    .item_listagem td::before{
-        content: attr(data-cell) ":";
-        font-weight: 700;
-        width: 80px;
-        text-align: left;
-    }
-
-    .item_listagem td:last-child{
-        margin-bottom: 24px;
-    }
-
-    .item_listagem td:first-child{
-        margin-top: 24px;
-    }
-
-
+h1{
+    border-bottom: 1px solid #B51D44;
+    text-transform: uppercase;
 }
