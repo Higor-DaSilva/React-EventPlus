@@ -23,16 +23,15 @@ const Modal = (props) => {
         listarComentarios()
     }, [comentarios])
 
-    async function cadastrarComentario(comentario) {
+    async function cadastrarComentario(comentario) {        
         try {
-            await api.post("ComentariosEventos", {
-                idUsuario: usuarioId,
-                idEvento: props.idEvento,
+            await api.post("ComentariosEventos",{
+                idUsuario: usuarioId , 
+                idEvento: props.idEvento, 
                 descricao: comentario
             })
         } catch (error) {
-            console.log(error);
-
+            console.error(error);
         }
     }
 

@@ -20,7 +20,7 @@ const ListagemEventos = (props) => {
     const [modalAberto, setModalAberto] = useState(false)
 
     const [filtro, setFiltro] = useState(["todos"])
-    const [usuarioId, setUsuarioId] = useState("B2381F43-9D74-400D-B3ED-FD05D20E9885")
+    const [usuarioId, setUsuarioId] = useState("9E88FF81-D572-4CBB-9A40-FBA05EED0EC3")
 
     async function listarEventos() {
         try {
@@ -36,8 +36,12 @@ const ListagemEventos = (props) => {
                     ...atualEvento,
 
                     possuiPresenca: presenca?.situacao === true,
+                     idPresenca: presenca?.idPresencaEvento || null
                 }
             })
+
+            console.log(eventosComPresencas);
+            
 
             setListaEvento(eventosComPresencas)
 
@@ -73,18 +77,23 @@ const ListagemEventos = (props) => {
 
         try {
             if (presenca && IdPresencaEvento !== "") {
+                console.log("aqui1");
                 // Atualiza: situação para false (remover presença)
                 await api.put(`PresencasEventos/${IdPresencaEvento}`, { situacao: false });
                 Swal.fire('Removido!', 'Sua presença foi removida.', 'success');
-            } else if (IdPresencaEvento !== "") {
+                
+            } else if (IdPresencaEvento !== "" && IdPresencaEvento != null) {
+                console.log("aqui2");
                 // Atualiza: situação para true (confirmar presença)
                 await api.put(`PresencasEventos/${IdPresencaEvento}`, { situacao: true });
                 Swal.fire('Confirmado!', 'Sua presença foi confirmada.', 'success');
             } else {
+                console.log("aqui3");
                 // Cria nova presença
                 await api.post("PresencasEventos", { situacao: true, idUsuario: usuarioId, idEvento: idEvento });
                 Swal.fire('Confirmado!', 'Sua presença foi confirmada.', 'success');
             }
+            listarEventos();
         } catch (error) {
             console.error(error);
             Swal.fire('Erro!', 'Algo deu errado ao manipular presença.', 'error');
@@ -96,11 +105,13 @@ const ListagemEventos = (props) => {
         const hoje = new Date();
         return listaEvento.filter(evento => {
             const dataEvento = new Date(evento.dataEvento);
+            // console.log(listaEvento);
 
             if (filtro.includes("todos")) return true;
             if (filtro.includes("futuros") && dataEvento > hoje) return true;
             if (filtro.includes("passados") && dataEvento < hoje) return true;
             return false;
+            
         })
     }
 
@@ -113,25 +124,25 @@ const ListagemEventos = (props) => {
                     <hr />
 
 
-                    <div className="tabela_eventos">
+                    <div className="tabela_listagem">
 
-                        <select className="select"
+                        <select className="left select"
                             value={props.valorSelect}
                             onChange={(e) => setFiltro(e.target.value)}
                         >
-                            <option value="Todos" selected>Todos os Eventos</option>
+                            <option value="todos" selected>Todos os Eventos</option>
 
-                            <option value="Futuros" selected>Somente Futuros</option>
+                            <option value="futuros" selected>Somente Futuros</option>
 
-                            <option value="Passados" selected>Somente Passados</option>
+                            <option value="passados" selected>Somente Passados</option>
 
 
                         </select>
 
                         <table>
                             <thead>
-                                <tr className="table_eventos">
-                                    <th>Titulo</th>
+                                <tr className="tabela_eventos">
+                                    <th >Titulo</th>
                                     <th>Data do Evento</th>
                                     <th>Tipo Eventos</th>
                                     <th>Descriçao</th>
@@ -147,7 +158,9 @@ const ListagemEventos = (props) => {
                                         <tr key={item.idPresencaEvento}className="item_listaEventos">
                                             <td data-cell="Nome">{item.nomeEvento}</td>
                                             <td data-cell="Data">{format(item.dataEvento, "dd/MM/yyyy")}</td>
-                                            <td data-cell="Tipo Evento">{item.tiposEvento.tituloTipoEvento}</td>
+                                            <td data-cell="Tipo Evento" 
+                                            className="left"
+                                            >{item.tiposEvento.tituloTipoEvento}</td>
 
                                             <td data-cell="descricao">
                                                 <button className="icon" onClick={() =>
@@ -162,8 +175,9 @@ const ListagemEventos = (props) => {
                                                 </button>
                                             </td>
 
-                                            <td data-cell="botao"><Toggle presenca={item.possuiPresenca}
-                                                manipular={() => manipularPresenca(item.idEvento, item.possuiPresenca, item.iddPresencaEvento)
+                                            <td data-cell="botao"><Toggle
+                                             presenca={item.possuiPresenca}
+                                                manipular={() => manipularPresenca(item.idEvento, item.possuiPresenca, item.idPresenca)
                                                 } /></td>
                                         </tr>
                                     )
