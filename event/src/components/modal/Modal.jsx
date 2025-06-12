@@ -6,7 +6,7 @@ import api from "../../Services/services";
 const Modal = (props) => {
 
     const [comentarios, setComentarios] = useState([])
-    const [usuarioId, setUsuarioId] = useState("B2381F43-9D74-400D-B3ED-FD05D20E9885")
+    const [usuarioId, setUsuarioId] = useState("36CD9876-CE30-46A1-A0AD-A6BCF6408E9A")
     const [novoComentario, setNovoComentario] = useState("")
 
 
@@ -23,11 +23,11 @@ const Modal = (props) => {
         listarComentarios()
     }, [comentarios])
 
-    async function cadastrarComentario(comentario) {        
+    async function cadastrarComentario(comentario) {
         try {
-            await api.post("ComentariosEventos",{
-                idUsuario: usuarioId , 
-                idEvento: props.idEvento, 
+            await api.post("ComentariosEventos", {
+                idUsuario: usuarioId,
+                idEvento: props.idEvento,
                 descricao: comentario
             })
         } catch (error) {
@@ -40,7 +40,6 @@ const Modal = (props) => {
             await api.delete(`ComentariosEventos/${idComentario}`)
         } catch (error) {
             console.log(error);
-
         }
     }
 
@@ -70,7 +69,8 @@ const Modal = (props) => {
                                         value={novoComentario}
                                         onChange={(e) => setNovoComentario(e.target.value)}
                                     />
-                                    <button onClick={() => cadastrarComentario(novoComentario)}>
+                                    <button className="botao_comen"
+                                        onClick={() => cadastrarComentario(novoComentario)}>
                                         Cadastrar
                                     </button>
                                 </div>

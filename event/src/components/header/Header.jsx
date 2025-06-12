@@ -2,7 +2,7 @@ import "./Header.css";
 import Logo from "../../assents/img/logo1.svg";
 import Admin from "../../assents/img/Admin.png"
 import {Link} from "react-router-dom";
-const Header = () => {
+const Header = (props) => {
     return (
         <header>
             <div className="layout_grid cabecalho">
@@ -17,10 +17,18 @@ const Header = () => {
               <Link to="/Contatos" className="link_header" href="">Contatos</Link>
             </nav>
             
-            <nav className="nav_header">
+            {/* <nav className="nav_header">
               <Link to="/ListagemEvento" className="link_header" href="">Administrador</Link>
             </nav>
-              <img className="admin" src={Admin} />
+              <img className="admin" src={Admin} /> */}
+              <nav className="nav_img" style={{ display: props.visibilidade }}>
+                    <Link href="" className="link_header" to="/" >{props.user}</Link>
+                    <img className="admin" src={Admin} alt="Icone" style={{ display: props.visibilidade }} />
+                </nav>
+
+                <div className="login" style={{ display: props.botao_logar }}>
+                    <Link href="" to="/" className="logar">Logar</Link>
+                </div>
 
             </div>
         </header>

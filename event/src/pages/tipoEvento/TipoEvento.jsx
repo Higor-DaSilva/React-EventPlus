@@ -127,7 +127,10 @@ const TipoEvento = () => {
 
     return (
         <>
-            <Header />
+            <Header
+                user="Administrador"
+                botao_logar="none"
+            />
             <Cadastro
                 tituloCadastro="Cadastro Tipo de Eventos"
                 img_banner={Banner}

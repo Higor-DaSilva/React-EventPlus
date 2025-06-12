@@ -15,7 +15,7 @@ const CadastroEvento = () => {
     const [listaTipoEvento, setListaTipoEvento] = useState([])
     const [dataevento, setDataEvento] = useState("");
     const [descricao, setDescricao] = useState("");
-    const [instituicao, setInstituicao] = useState("B4F736FD-96F5-48EE-86F5-9B9AA85D716A");
+    const [instituicao, setInstituicao] = useState("D6629BE3-B992-4648-BBBA-3332245E30F0");
 
     function alertar(icone, mensagem) {
         const Toast = Swal.mixin({
@@ -59,7 +59,7 @@ const CadastroEvento = () => {
 
     async function cadastrarEvento(evt) {
         evt.preventDefault();
-        if (evento.trim() != "") {
+        if (evento.trim() !== "") {
             try {
                 await api.post("Eventos", { nomeEvento: evento, idTipoEvento: tipoevento, dataEvento: dataevento, descricao: descricao, idInstituicao: instituicao });
                 alertar("success", "Cadastro realizado com sucesso!");
@@ -99,62 +99,62 @@ const CadastroEvento = () => {
         });
     }
 
- async function editarEvento(evento) {
-  try {
-    const tiposOptions = listaTipoEvento
-      .map(tipo => `<option value="${tipo.idTipoEvento}" ${tipo.idTipoEvento === evento.idTipoEvento ? 'selected' : ''}>${tipo.tituloTipoEvento}</option>`)
-      .join('');
+    async function editarEvento(evento) {
+        try {
+            const tiposOptions = listaTipoEvento
+                .map(tipo => `<option value="${tipo.idTipoEvento}" ${tipo.idTipoEvento === evento.idTipoEvento ? 'selected' : ''}>${tipo.tituloTipoEvento}</option>`)
+                .join('');
 
-    const { value } = await Swal.fire({
-      title: "Editar Tipo de Evento",
-      html: `
+            const { value } = await Swal.fire({
+                title: "Editar Tipo de Evento",
+                html: `
         <input id="campo1" class="swal2-input" placeholder="Título" value="${evento.nomeEvento || ''}">
         <input id="campo2" class="swal2-input" type="date" value="${evento.dataEvento?.substring(0, 10) || ''}">
         <select id="campo3" class="swal2-select">${tiposOptions}</select>
         <input id="campo4" class="swal2-input" placeholder="Categoria" value="${evento.descricao || ''}">
       `,
-      showCancelButton: true,
-      confirmButtonText: "Salvar",
-      cancelButtonText: "Cancelar",
-      focusConfirm: false,
-      preConfirm: () => {
-        const campo1 = document.getElementById("campo1").value;
-        const campo2 = document.getElementById("campo2").value;
-        const campo3 = document.getElementById("campo3").value;
-        const campo4 = document.getElementById("campo4").value;
+                showCancelButton: true,
+                confirmButtonText: "Salvar",
+                cancelButtonText: "Cancelar",
+                focusConfirm: false,
+                preConfirm: () => {
+                    const campo1 = document.getElementById("campo1").value;
+                    const campo2 = document.getElementById("campo2").value;
+                    const campo3 = document.getElementById("campo3").value;
+                    const campo4 = document.getElementById("campo4").value;
 
-        if (!campo1 || !campo2 || !campo3 || !campo4) {
-          Swal.showValidationMessage("Preencha todos os campos.");
-          return false;
+                    if (!campo1 || !campo2 || !campo3 || !campo4) {
+                        Swal.showValidationMessage("Preencha todos os campos.");
+                        return false;
+                    }
+
+                    return { campo1, campo2, campo3, campo4 };
+                }
+            });
+
+            if (!value) {
+                console.log("Edição cancelada pelo usuário.");
+                return;
+            }
+
+            console.log("Dados para atualizar:", value);
+
+            await api.put(`eventos/${evento.idEvento}`, {
+                nomeEvento: value.campo1,
+                dataEvento: value.campo2,
+                idTipoEvento: value.campo3,
+                descricao: value.campo4,
+            });
+
+            console.log("Evento atualizado com sucesso!");
+            Swal.fire("Atualizado!", "Dados salvos com sucesso.", "success");
+            listarEvento();
+
+        } catch (error) {
+            console.log("Erro ao atualizar evento:", error);
+            Swal.fire("Erro!", "Não foi possível atualizar.", "error");
         }
-
-        return { campo1, campo2, campo3, campo4 };
-      }
-    });
-
-    if (!value) {
-      console.log("Edição cancelada pelo usuário.");
-      return;
     }
-
-    console.log("Dados para atualizar:", value);
-
-    await api.put(`eventos/${evento.idEvento}`, {
-      nomeEvento: value.campo1,
-      dataEvento: value.campo2,
-      idTipoEvento: value.campo3,  
-      descricao: value.campo4,
-    });
-
-    console.log("Evento atualizado com sucesso!");
-    Swal.fire("Atualizado!", "Dados salvos com sucesso.", "success");
-    listarEvento();
-
-  } catch (error) {
-    console.log("Erro ao atualizar evento:", error);
-    Swal.fire("Erro!", "Não foi possível atualizar.", "error");
-  }
-}
 
     async function descricaoEvento(id) {
         Swal.fire({
@@ -172,7 +172,11 @@ const CadastroEvento = () => {
 
     return (
         <>
-            <Header nomeUsu="Administrador" />
+            <Header
+                user="Administrador"
+                botao_logar="none"
+            />
+
             <Cadastro
                 tituloCadastro="Cadastro de Evento"
                 img_banner={Banner}

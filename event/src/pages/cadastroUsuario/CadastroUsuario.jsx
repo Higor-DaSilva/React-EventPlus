@@ -81,7 +81,7 @@ const CadastroUsuario = () => {
             alertar("error", "Erro ao Excluir!");
         });
     }
-  async function editarTipoUsuario(tipousuario) {
+    async function editarTipoUsuario(tipousuario) {
         const { value: novoUsuario } = await Swal.fire({
             title: "Modifique o tipo do usuario",
             input: "text",
@@ -117,7 +117,10 @@ const CadastroUsuario = () => {
 
 
         <>
-            <Header />
+            <Header
+                user="Administrador"
+                botao_logar="none"
+            />
             <Cadastro
                 tituloCadastro="Cadastro Tipo de Usuário"
                 img_banner={Banner}

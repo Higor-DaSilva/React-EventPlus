@@ -8,12 +8,15 @@ import { useState } from "react";
 import { userDecodeToken } from "../../auth/Auth";
 import secureLocalStorage from "react-secure-storage"
 import { useNavigate } from "react-router-dom"
+import { useAuth } from "../../contexts/AuthContext";
 
 const Login = () => {
     const [email, setEmail] = useState("");
     const [senha, setSenha] = useState("");
 
     const navigate = useNavigate();
+
+    const {setUsuario} = useAuth();
 
     async function realizarAutenticacao(e) {
         e.preventDefault();
@@ -31,9 +34,11 @@ const Login = () => {
                     const tokenDecodificado = userDecodeToken(token);
                     //    console.log(tokenDecodificado);
 
+                    setUsuario(tokenDecodificado);
+
                     secureLocalStorage.setItem("tokenLogin", JSON.stringify(tokenDecodificado))
 
-                    if (tokenDecodificado.tipoUsuario === "normal") {
+                    if (tokenDecodificado.tipoUsuario === "aluno") {
                         //redirecciona para lista de evento(branca)
                         navigate("/ListagemEvento")
                     } else {

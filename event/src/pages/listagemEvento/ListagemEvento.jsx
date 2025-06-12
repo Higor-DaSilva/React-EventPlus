@@ -9,6 +9,7 @@ import Swal from 'sweetalert2'
 import api from "../../Services/services";
 import { format } from "date-fns";
 import Modal from "../../components/Modal/Modal";
+import { useAuth } from "../../contexts/AuthContext";
 
 const ListagemEventos = (props) => {
 
@@ -20,14 +21,17 @@ const ListagemEventos = (props) => {
     const [modalAberto, setModalAberto] = useState(false)
 
     const [filtro, setFiltro] = useState(["todos"])
-    const [usuarioId, setUsuarioId] = useState("9E88FF81-D572-4CBB-9A40-FBA05EED0EC3")
+
+    const { usuario } = useAuth();
+    // const [usuarioId, setUsuarioId] = useState("9E88FF81-D572-4CBB-9A40-FBA05EED0EC3")
 
     async function listarEventos() {
         try {
             //pego o eventos em geral
             const resposta = await api.get("eventos");
             const todosOsEventos = resposta.data;
-            const respostaPresencas = await api.get("PresencasEventos/ListarMinhas/" + usuarioId)
+
+            const respostaPresencas = await api.get("PresencasEventos/ListarMinhas/" + usuario.idUsuario)
             const minhasPresencas = respostaPresencas.data;
 
             const eventosComPresencas = todosOsEventos.map((atualEvento) => {
@@ -36,12 +40,12 @@ const ListagemEventos = (props) => {
                     ...atualEvento,
 
                     possuiPresenca: presenca?.situacao === true,
-                     idPresenca: presenca?.idPresencaEvento || null
+                    idPresenca: presenca?.idPresencaEvento || null
                 }
             })
 
             console.log(eventosComPresencas);
-            
+
 
             setListaEvento(eventosComPresencas)
 
@@ -51,9 +55,10 @@ const ListagemEventos = (props) => {
         }
     }
 
-
     useEffect(() => {
         listarEventos();
+        console.log(usuario);
+
     }, [])
 
     function abrirModal(tipo, dados) {
@@ -81,7 +86,7 @@ const ListagemEventos = (props) => {
                 // Atualiza: situação para false (remover presença)
                 await api.put(`PresencasEventos/${IdPresencaEvento}`, { situacao: false });
                 Swal.fire('Removido!', 'Sua presença foi removida.', 'success');
-                
+
             } else if (IdPresencaEvento !== "" && IdPresencaEvento != null) {
                 console.log("aqui2");
                 // Atualiza: situação para true (confirmar presença)
@@ -90,7 +95,7 @@ const ListagemEventos = (props) => {
             } else {
                 console.log("aqui3");
                 // Cria nova presença
-                await api.post("PresencasEventos", { situacao: true, idUsuario: usuarioId, idEvento: idEvento });
+                await api.post("PresencasEventos", { situacao: true, idUsuario: usuario.idUsuario, idEvento: idEvento });
                 Swal.fire('Confirmado!', 'Sua presença foi confirmada.', 'success');
             }
             listarEventos();
@@ -111,13 +116,16 @@ const ListagemEventos = (props) => {
             if (filtro.includes("futuros") && dataEvento > hoje) return true;
             if (filtro.includes("passados") && dataEvento < hoje) return true;
             return false;
-            
+
         })
     }
 
     return (
         <>
-            <Header adm="Alunos" />
+            <Header
+             user="ALuno"
+                botao_logar="none"
+                 />
             <main className="listaEventos layout_grid">
                 <section className="listagemEventos" id="">
                     <h1>Eventos</h1>
@@ -155,11 +163,11 @@ const ListagemEventos = (props) => {
                                 {listaEvento.length > 0 ? (
                                     filtrarEventos() && filtrarEventos().map((item) => (
 
-                                        <tr key={item.idPresencaEvento}className="item_listaEventos">
+                                        <tr key={item.idPresencaEvento} className="item_listaEventos">
                                             <td data-cell="Nome">{item.nomeEvento}</td>
                                             <td data-cell="Data">{format(item.dataEvento, "dd/MM/yyyy")}</td>
-                                            <td data-cell="Tipo Evento" 
-                                            className="left"
+                                            <td data-cell="Tipo Evento"
+                                                className="left"
                                             >{item.tiposEvento.tituloTipoEvento}</td>
 
                                             <td data-cell="descricao">
@@ -176,7 +184,7 @@ const ListagemEventos = (props) => {
                                             </td>
 
                                             <td data-cell="botao"><Toggle
-                                             presenca={item.possuiPresenca}
+                                                presenca={item.possuiPresenca}
                                                 manipular={() => manipularPresenca(item.idEvento, item.possuiPresenca, item.idPresenca)
                                                 } /></td>
                                         </tr>
