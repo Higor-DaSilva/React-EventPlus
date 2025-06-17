@@ -11,10 +11,10 @@ const Header = (props) => {
             <img src={Logo} alt="Logo do Event+" />
             </Link>
             <nav className="nav_header">
-              <Link to="/Tipoevento" className="link_header" href="">Home</Link>
-              <Link to="/Eventos" className="link_header" href="">Eventos</Link>
-              <Link to="/TipoUsuario" className="link_header" href="">Usuários</Link>
-              <Link to="/Contatos" className="link_header" href="">Contatos</Link>
+              <Link style={{ display: props.visibilidade2 }} to="/Tipoevento" className="link_header" href="">Home</Link>
+              <Link style={{ display: props.visibilidade2 }} to="/Eventos" className="link_header" href="">Eventos</Link>
+              <Link style={{ display: props.visibilidade2 }} to="/TipoUsuario" className="link_header" href="">Usuários</Link>
+              <Link style={{ display: props.visibilidade2 }} to="/Contatos" className="link_header" href="">Contatos</Link>
             </nav>
             
             {/* <nav className="nav_header">

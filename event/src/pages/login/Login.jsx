@@ -89,7 +89,7 @@ const Login = () => {
 
                             </div>
                         </div>
-                        <h3 className="mudar_senha">Esqueceu a senha?</h3>
+                        <h3 className="mudar_senha" >criar conta</h3>
                         <Botao nomeBotao="Login 😁" />
                     </form>
                 </section>
