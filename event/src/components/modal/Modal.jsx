@@ -48,24 +48,48 @@ const Modal = (props) => {
         listarComentarios()
     }, [comentarios])
 
-    async function cadastrarComentario(comentario) {
-        try {
-            console.log(usuario.idUsuario)
-            console.log(props.idEvento)
-            console.log(comentario)
-           await api.post("ComentariosEventos", {
+   async function cadastrarComentario(comentario) {
+        if (comentario.trim() != "") {
+            let timerInterval;
+            Swal.fire({
+                title: "Auto close alert!",
+                html: "I will close in <b></b> milliseconds.",
+                timer: 500,
+                timerProgressBar: true,
+                didOpen: () => {
+                    Swal.showLoading();
+                    const timer = Swal.getPopup().querySelector("b");
+                    timerInterval = setInterval(() => {
+                        timer.textContent = `${Swal.getTimerLeft()}`;
+                    }, 100);
+                },
+                willClose: () => {
+                    clearInterval(timerInterval);
+                }
+            }).then(async (result) => {
+                /* Read more about handling dismissals below */
+                if (result.dismiss === Swal.DismissReason.timer) {
+                    try {
+                        console.log(usuario.idUsuario);
+                        console.log(props.idEvento);
+                        console.log(comentario);
+                        await api.post("ComentariosEventos", {
+                            idUsuario: usuario.idUsuario,
+                            idEvento: props.idEvento,
+                            descricao: comentario
+                        })
 
-                idUsuario: usuario.idUsuario,
-                idEvento: props.idEvento,
-                descricao: comentario
-            })
+                        alertar("success", "Cadastro realizado com sucesso");
+                    } catch (error) {
+                        console.log(error);
+                        alertar("error", "Erro! Entre em contato com o suporte!");
+                    }
+                    console.log("I was closed by the timer");
+                }
+            });
 
-
-        } catch (error) {
-            // console.log(error.response.data);
-
-            alertar("error" , error.response.data)
-
+        } else {
+            alertar("warning", "Preencha o campo!");
         }
     }
 
