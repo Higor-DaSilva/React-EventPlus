@@ -1,13 +1,13 @@
 import Botao from "../../components/botao/Botao";
 import Logo from "../../assents/img/logo1.svg";
-import Banner from "../../assents/img/fundo_login.png"
+import Banner from "../../assents/img/fundo_login.png";
 import "./Login.css";
-import Swal from 'sweetalert2'
-import api from "../../Services/services"
+import Swal from 'sweetalert2';
+import api from "../../Services/services";
 import { useState } from "react";
 import { userDecodeToken } from "../../auth/Auth";
-import secureLocalStorage from "react-secure-storage"
-import { useNavigate } from "react-router-dom"
+import secureLocalStorage from "react-secure-storage";
+    import {Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
 
 const Login = () => {
@@ -38,7 +38,7 @@ const Login = () => {
 
                     secureLocalStorage.setItem("tokenLogin", JSON.stringify(tokenDecodificado))
 
-                    if (tokenDecodificado.tipoUsuario === "aluno") {
+                    if (tokenDecodificado.tipoUsuario === "aluno"){
                         //redirecciona para lista de evento(branca)
                         navigate("/ListagemEvento")
                     } else {
@@ -89,8 +89,9 @@ const Login = () => {
 
                             </div>
                         </div>
-                        <h3 className="mudar_senha" >criar conta</h3>
-                        <Botao nomeBotao="Login 😁" />
+                         <Link to="/Usuario" className="mudar_senha">Criar conta</Link>
+                        {/* <h3 className="mudar_senha">criar c</h3> */}
+                        <Botao nomeBotao="Login 😁"/>
                     </form>
                 </section>
             </main>
