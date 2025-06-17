@@ -2,11 +2,36 @@ import { useEffect, useState } from "react"
 import imgDeletar from "../../assents/img/imgDeletar.png"
 import "./Modal.css"
 import api from "../../Services/services";
+import { useAuth } from "../../contexts/AuthContext";
+import Swal from "sweetalert2";
 
 const Modal = (props) => {
 
+    function alertar(icone, mensagem) {
+            //------------ALERTA------------------
+    
+            const Toast = Swal.mixin({
+                toast: true,
+                position: "top-end",
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.onmouseenter = Swal.stopTimer;
+                    toast.onmouseleave = Swal.resumeTimer;
+                }
+            });
+            Toast.fire({
+                icon: icone,
+                title: mensagem
+            });
+    
+            //----------FIM DO ALERTA--------------
+        }
+
     const [comentarios, setComentarios] = useState([])
-    const [usuarioId, setUsuarioId] = useState("36CD9876-CE30-46A1-A0AD-A6BCF6408E9A")
+    // const [usuarioId, setUsuarioId] = useState("B2381F43-9D74-400D-B3ED-FD05D20E9885")
+    const { usuario } = useAuth();
     const [novoComentario, setNovoComentario] = useState("")
 
 
@@ -25,13 +50,22 @@ const Modal = (props) => {
 
     async function cadastrarComentario(comentario) {
         try {
-            await api.post("ComentariosEventos", {
-                idUsuario: usuarioId,
+            console.log(usuario.idUsuario)
+            console.log(props.idEvento)
+            console.log(comentario)
+           await api.post("ComentariosEventos", {
+
+                idUsuario: usuario.idUsuario,
                 idEvento: props.idEvento,
                 descricao: comentario
             })
+
+
         } catch (error) {
-            console.error(error);
+            // console.log(error.response.data);
+
+            alertar("error" , error.response.data)
+
         }
     }
 
@@ -40,6 +74,7 @@ const Modal = (props) => {
             await api.delete(`ComentariosEventos/${idComentario}`)
         } catch (error) {
             console.log(error);
+
         }
     }
 
@@ -69,7 +104,8 @@ const Modal = (props) => {
                                         value={novoComentario}
                                         onChange={(e) => setNovoComentario(e.target.value)}
                                     />
-                                    <button className="botao_comen"
+                                    <button
+                                        className="botao"
                                         onClick={() => cadastrarComentario(novoComentario)}>
                                         Cadastrar
                                     </button>
